@@ -56,12 +56,8 @@ def get_coordinates(address):
         return matches[0]["coordinates"]["x"], matches[0]["coordinates"]["y"]
 
 
-if __name__ == "__main__":
+def geocode():
     display_welcome_message()
     location_info = get_address()
-    lat, lon = get_coordinates(location_info)
+    return get_coordinates(location_info)
 
-    if lat:
-        print(lat, lon)
-    
-    # TODO: option to enter lat/lon manually?
