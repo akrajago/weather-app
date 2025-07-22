@@ -8,13 +8,19 @@ if __name__ == "__main__":
 
     option = input("Option: ")
 
+    # Get latitude/longitude from address geocoder
     if option == "1":
         lat, lon = geolocation.geocode()
 
-        if lat is not None:
+        if lat is None:
             sys.exit("Invalid latitude/longitude")
+    # Get latitude/longitude from user input
     elif option == "2":
         lat = input("Latitude: ")
         lon = input("Longitude: ")
+    # Exit if invalid option
     else:
         sys.exit("Option not found")
+
+    if abs(float(lat)) > 90 or abs(float(lon)) > 180:
+        sys.exit("Invalid latitude/longitude (out of bounds)")
