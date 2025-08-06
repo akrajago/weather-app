@@ -1,5 +1,6 @@
 import sys
 import geolocation
+from dotenv import load_dotenv
 
 if __name__ == "__main__":
     print("Choose how to proceed:\n"
@@ -22,5 +23,9 @@ if __name__ == "__main__":
     else:
         sys.exit("Option not found")
 
+    # Exit if not a real geographical point
     if abs(float(lat)) > 90 or abs(float(lon)) > 180:
         sys.exit("Invalid latitude/longitude (out of bounds)")
+
+    # Load API info for weather services
+    load_dotenv()
