@@ -1,5 +1,6 @@
 import sys
 import geolocation
+import nws
 from dotenv import load_dotenv
 
 if __name__ == "__main__":
@@ -29,3 +30,6 @@ if __name__ == "__main__":
 
     # Load API info for weather services
     load_dotenv()
+
+    nws_weather = nws.NWSForecast()
+    nws_weather.test()
