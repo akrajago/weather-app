@@ -20,16 +20,17 @@ if __name__ == "__main__":
     elif option == "2":
         lat = input("Latitude: ")
         lon = input("Longitude: ")
+
+        # Exit if not a real geographical point
+        # TODO: replace this with geocoding API
+        if abs(float(lat)) > 90 or abs(float(lon)) > 180:
+            sys.exit("Invalid latitude/longitude (out of bounds)")
     # Exit if invalid option
     else:
         sys.exit("Option not found")
-
-    # Exit if not a real geographical point
-    if abs(float(lat)) > 90 or abs(float(lon)) > 180:
-        sys.exit("Invalid latitude/longitude (out of bounds)")
 
     # Load API info for weather services
     load_dotenv()
 
     nws_weather = nws.NWSForecast()
-    nws_weather.test()
+    # nws_weather.get_gridpoints(lat, lon)
