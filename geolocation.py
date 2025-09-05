@@ -17,13 +17,14 @@ def get_address():
 
 
 def get_coordinates(address):
-    # Match API specification of "%20" in place of spaces
-    formatted = [a.replace(" ", "%20") for a in address]
+    # Assemble params for API call
+    fields = ["street", "city", "state", "zip"]
+    payload = dict(zip(fields, address)) | {"benchmark": "Public_AR_Current",
+                                            "format": "json"}
+
     # Get geolocation info from census.gov API
-    geo = requests.get(f"https://geocoding.geo.census.gov/geocoder/locations/"
-                       f"address?street={formatted[0]}&city={formatted[1]}"
-                       f"&state={formatted[2]}&zip={formatted[3]}"
-                       f"&benchmark=Public_AR_Current&format=json").json()
+    geo = requests.get(f"https://geocoding.geo.census.gov/"
+                       f"geocoder/locations/address", params=payload).json()
 
     # Print any errors returned by geocoding API
     if "errors" in geo:
@@ -47,17 +48,27 @@ def get_coordinates(address):
         selected = input("Matched address: ")
         # Return info of selected match
         if (i := int(selected)) <= len(matches):
-            return matches[i - 1]["coordinates"]["x"], matches[i - 1]["coordinates"]["y"]
+            return matches[i - 1]["coordinates"]["y"], matches[i - 1]["coordinates"]["x"]
         else:
             print("Unable to find match")
             return None, None
     else:
         # Return info of first/only match
-        return matches[0]["coordinates"]["x"], matches[0]["coordinates"]["y"]
+        return matches[0]["coordinates"]["y"], matches[0]["coordinates"]["x"]
 
 
 def geocode():
     display_welcome_message()
     location_info = get_address()
     return get_coordinates(location_info)
+
+
+def check_coordinates(lat, lon):
+    # Assemble params for API call
+    payload = {"x": lon, "y": lat, "benchmark": "Public_AR_Current",
+               "vintage": "Current_Current", "format": "json"}
+
+    # Get geolocation info from census.gov API
+    geo = requests.get(f"https://geocoding.geo.census.gov/"
+                       f"geocoder/geographies/coordinates", params=payload).json()
 
