@@ -72,3 +72,15 @@ def check_coordinates(lat, lon):
     geo = requests.get(f"https://geocoding.geo.census.gov/"
                        f"geocoder/geographies/coordinates", params=payload).json()
 
+    # Print any errors returned by geocoding API
+    if "errors" in geo:
+        print("ERROR: Bad input data")
+        for error in geo["errors"]:
+            print("-", error)
+        return None
+
+    # Check if location is in the US
+    if geo["result"]["geographies"]:
+        return True
+    else:
+        return False

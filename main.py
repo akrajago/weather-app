@@ -4,7 +4,7 @@ import nws
 from dotenv import load_dotenv
 
 if __name__ == "__main__":
-    print("Choose how to proceed:\n"
+    print("Choose how to proceed (US locations only):\n"
           "1: Enter address information\n"
           "2: Enter latitude and longitude")
 
@@ -22,9 +22,10 @@ if __name__ == "__main__":
         lon = input("Longitude: ")
 
         # Exit if not a real geographical point
-        # TODO: replace this with geocoding API
         if abs(float(lat)) > 90 or abs(float(lon)) > 180:
             sys.exit("Invalid latitude/longitude (out of bounds)")
+        elif not geolocation.check_coordinates(lat, lon):
+            sys.exit("Latitude/longitude not in US")
     # Exit if invalid option
     else:
         sys.exit("Option not found")
